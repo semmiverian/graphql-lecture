@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "Harry Potret",
+    "genre": "Fantasy",
+    "authorId": 1
+  },
+
+  {
+    "id": 2,
+    "name": "Harry Poto",
+    "genre": "Fantasy",
+    "authorId": 2
+  },
+
+  {
+    "id": 3,
+    "name": "Jono Potret",
+    "genre": "Fantasy",
+    "authorId": 1
+  }
+]
