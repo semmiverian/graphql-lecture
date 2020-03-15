@@ -1,4 +1,4 @@
-const {ApolloServer, gql, makeExecutableSchema} = require('apollo-server')
+const {ApolloServer, gql, makeExecutableSchema, AuthenticationError} = require('apollo-server')
 const client = require('./services/mongo')
 const BookSchema = require('./schemas/book')
 
@@ -20,7 +20,12 @@ const schema = makeExecutableSchema({
 
 const server = new ApolloServer({
   schema,
-  async context() {
+  async context({req}) {
+    console.log({req})
+
+    if (req.headers.token === 'asd') {
+      throw new AuthenticationError('Error gan')
+    }
     await client.connect()
     const db = client.db('majestic-fox')
 

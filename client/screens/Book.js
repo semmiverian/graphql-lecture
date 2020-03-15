@@ -1,6 +1,6 @@
 import React from 'react'
-import {View, Text, SafeAreaView} from 'react-native'
-import {useQuery} from '@apollo/react-hooks'
+import {View, Text, SafeAreaView, TouchableOpacity} from 'react-native'
+import {useQuery, useMutation} from '@apollo/react-hooks'
 import {gql} from 'apollo-boost'
 
 const FETCH_ALL_BOOKS = gql`
@@ -12,10 +12,19 @@ const FETCH_ALL_BOOKS = gql`
   }
 `
 
+const ADD_FAVORITES_BOOK = gql`
+  mutation AddBook($name: String!) {
+    addBook(name: $name) @client
+  }
+`
+
 export default function Book() {
   const {loading, error, data} = useQuery(FETCH_ALL_BOOKS)
+  const [addBook] = useMutation(ADD_FAVORITES_BOOK)
 
-  console.log(data)
+  function addToFavorites(book) {
+    addBook({variables: {name: book.name}})
+  }
 
   if (loading)
     return (
@@ -31,8 +40,10 @@ export default function Book() {
     )
   return (
     <SafeAreaView>
-      {data.books.map(book => (
-        <Text>{book.name}</Text>
+      {data.books.map((book, index) => (
+        <TouchableOpacity key={index} onPress={() => addToFavorites(book)}>
+          <Text>{book.name}</Text>
+        </TouchableOpacity>
       ))}
     </SafeAreaView>
   )
